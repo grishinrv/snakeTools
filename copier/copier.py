@@ -10,9 +10,14 @@ def substitute_home_path(input_string):
         return input_string
 
 
+def normalize_path(path):
+    return os.path.normpath(str.replace(path, '\\', '/'))
+
+
 config = configparser.ConfigParser()
 config.read('./copier.config')
-destination = substitute_home_path(config['destination']['path'])
+destination = normalize_path(substitute_home_path(config['destination']['path']))
+print("Copying into: ", destination)
 for key in config['paths']:
     shutil.copy(config['paths'][key], destination)
 print('Copying job complete')
